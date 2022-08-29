@@ -129,5 +129,3 @@ history = model.fit(train_generator,
 
 #모델 저장
 model.save('cnn_model_30epoch_Adam.h5')
-
-#model = tf.keras.models.load_model('cnn_model_30epoch_Adam.h5')

@@ -3,13 +3,13 @@ import numpy as np
 import keras
 import os
 import tensorflow as tf
-from keras.utils import to_categorical
+from tensorflow.keras.utils import to_categorical
 from keras.models import load_model
 import warnings
 from keras.models import Sequential
 from keras import regularizers
 from keras.callbacks import ModelCheckpoint, EarlyStopping
-from keras.optimizers import Adam
+from tensorflow.keras.optimizers import Adam
 from keras.preprocessing.image import ImageDataGenerator
 from keras.layers import Conv2D, MaxPool2D, Flatten, Dense, Dropout, BatchNormalization, MaxPooling2D, Activation, Input
 from sklearn.model_selection import train_test_split

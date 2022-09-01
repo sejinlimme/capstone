@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 import tensorflow as tf
-from keras.utils import  img_to_array
+from tensorflow.keras.utils import img_to_array
 from keras.models import load_model
 
 #저장된 xml과 모델 불러오기

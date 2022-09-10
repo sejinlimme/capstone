@@ -79,7 +79,7 @@ model.compile(optimizer=adam, loss='categorical_crossentropy', metrics=['accurac
 
 y_train = to_categorical(y_train, 7)
 
-history = model.fit(x_train, y_train, epochs=30, validation_data=(x_test, y_test))
+history = model.fit(x_train, y_train, epochs=30, batch_size=64, validation_data=(x_test, y_test))
 
 print("Accuracy of our model on validation data : " , model.evaluate(x_test, y_test)[1]*100 , "%")
 

@@ -7,7 +7,7 @@ from keras.models import load_model
 #저장된 xml과 모델 불러오기
 xml = 'haarcascade_frontalface_default.xml'
 face_cascade = cv2.CascadeClassifier(xml)
-model = tf.keras.models.load_model('cnn_model_30epoch_Adam.h5')
+model = tf.keras.models.load_model('model.h5')
 Emotions = ["Angry", "Disgust", "Fear", "Happiness", "Sad", "Surprise", "Neutral"]
 
 cap = cv2.VideoCapture(0) #노트북 웹캠 카메라로 사용, 0이 내장, 1이 외장

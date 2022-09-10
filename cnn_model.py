@@ -85,6 +85,6 @@ print("Accuracy of our model on validation data : " , model.evaluate(x_test, y_t
 
 #모델 저장
 fer_json = model.to_json()
-with open("fer,json", "w") as json_file:
+with open("fer.json", "w") as json_file:
     json_file.write(fer_json)
 model.save('model.h5')

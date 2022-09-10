@@ -78,8 +78,12 @@ adam = Adam(learning_rate=0.0001)
 model.compile(optimizer=adam, loss='categorical_crossentropy', metrics=['accuracy'])
 
 y_train = to_categorical(y_train, 7)
+y_train.shape
 
-history = model.fit(x_train, y_train, epochs=30, batch_size=64, validation_data=(x_test, y_test))
+y_test = to_categorical(y_test, 7)
+y_test.shape
+
+history = model.fit(x_train, y_train, epochs=30, validation_data=(x_test, y_test))
 
 print("Accuracy of our model on validation data : " , model.evaluate(x_test, y_test)[1]*100 , "%")
 

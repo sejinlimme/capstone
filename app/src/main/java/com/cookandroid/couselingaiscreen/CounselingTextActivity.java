@@ -5,15 +5,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.common.api.Api;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -22,82 +30,74 @@ import okhttp3.Response;
 
 public class CounselingTextActivity extends AppCompatActivity {
 
-    private static final String urls = "http://127.0.0.1:5000/";
-    private EditText input_chat;
-    Button sendText;
+    private EditText InputChat;
+    private Button SendText, GetBtn;
+    private TextView GetInfom;
+    private String url = "http://192.168.123.105:5000";
+    private String POST = "POST";
+    private String GET = "GET";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.counselingtextscreen);
 
-        input_chat=findViewById(R.id.chatting);
-        sendText=findViewById(R.id.send);
+        InputChat = findViewById(R.id.chatting);
+        SendText = findViewById(R.id.send);
+        GetInfom = findViewById(R.id.getInform);
+        GetBtn = findViewById(R.id.getBtn);
 
-        sendText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendServer();
+        SendText.setOnClickListener(view -> {
+            String text = InputChat.getText().toString();
+            if(text.isEmpty()) {
+                InputChat.setError("This cannot be empty for post request");
+            } else {
+                sendRequest(POST, "getname", "name", text);
             }
+        });
+
+        GetBtn.setOnClickListener(view -> {
+            sendRequest(GET, "getfact", null, null);
         });
     }
 
-    public void sendServer(){
-        class sendData extends AsyncTask<Void, Void, String> {
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-            }
+    void sendRequest(String type, String method, String paramtext, String param) {
+        String fullURL = url+"/"+method+(param==null?"":"/"+param);
+        Request request;
 
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-            }
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS).build();
 
-            @Override
-            protected void onProgressUpdate(Void... values) {
-                super.onProgressUpdate(values);
-            }
+        if(type.equals(POST)) {
+            RequestBody formBody = new FormBody.Builder()
+                    .add(paramtext, param)
+                    .build();
 
-            @Override
-            protected void onCancelled(String s) {
-                super.onCancelled(s);
-            }
-
-            @Override
-            protected void onCancelled() {
-                super.onCancelled();
-            }
-
-            @Override
-            protected String doInBackground(Void... voids){
-                try{
-                    OkHttpClient client = new OkHttpClient();  // okHttpClient 호출
-                    JSONObject jsonInput = new JSONObject(); // Json객체 생성
-                    jsonInput.put("userChat", input_chat.getText().toString());
-
-                    RequestBody reqBody = RequestBody.create(
-                            MediaType.parse("application/json; charset=utf-8"),
-                            jsonInput.toString()
-                    );
-
-                    Request request = new Request.Builder()
-                            .post(reqBody)
-                            .url(urls)
-                            .build();
-
-                    Response responses = null;
-                    responses = client.newCall(request).execute();
-                    System.out.println(responses.body().string());
-                } catch (JSONException e){
-                    e.printStackTrace();
-                } catch (IOException e){
-                    e.printStackTrace();
-                }
-                return null;
-            }
+            request = new Request.Builder()
+                    .url(fullURL)
+                    .post(formBody)
+                    .build();
+        } else{
+            request = new Request.Builder()
+                    .url(fullURL)
+                    .build();
         }
-        sendData sendData = new sendData();
-        sendData.execute();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+                final String responseData = response.body().string();
+
+                CounselingTextActivity.this.runOnUiThread(() -> GetInfom.setText(responseData));
+            }
+        });
     }
 }

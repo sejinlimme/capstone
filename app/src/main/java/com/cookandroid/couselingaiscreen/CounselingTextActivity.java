@@ -1,41 +1,35 @@
 package com.cookandroid.couselingaiscreen;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.common.api.Api;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CounselingTextActivity extends AppCompatActivity {
 
+    private static final String baseURL = "http://192.168.123.105:5000";
     private EditText InputChat;
     private Button SendText, GetBtn;
     private TextView GetInfom;
-    private String url = "http://192.168.123.105:5000";
-    private String POST = "POST";
-    private String GET = "GET";
+
+    Retrofit mRetrofit = new Retrofit.Builder()
+            .baseUrl(baseURL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+    CounselingTextAPI counselingTextAPI = mRetrofit.create(CounselingTextAPI.class);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,56 +41,31 @@ public class CounselingTextActivity extends AppCompatActivity {
         GetInfom = findViewById(R.id.getInform);
         GetBtn = findViewById(R.id.getBtn);
 
-        SendText.setOnClickListener(view -> {
-            String text = InputChat.getText().toString();
-            if(text.isEmpty()) {
-                InputChat.setError("This cannot be empty for post request");
-            } else {
-                sendRequest(POST, "getname", "name", text);
+        SendText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String text = InputChat.getText().toString();
+                textCallback(text);
             }
-        });
-
-        GetBtn.setOnClickListener(view -> {
-            sendRequest(GET, "getfact", null, null);
         });
     }
 
-    void sendRequest(String type, String method, String paramtext, String param) {
-        String fullURL = url+"/"+method+(param==null?"":"/"+param);
-        Request request;
-
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS).build();
-
-        if(type.equals(POST)) {
-            RequestBody formBody = new FormBody.Builder()
-                    .add(paramtext, param)
-                    .build();
-
-            request = new Request.Builder()
-                    .url(fullURL)
-                    .post(formBody)
-                    .build();
-        } else{
-            request = new Request.Builder()
-                    .url(fullURL)
-                    .build();
-        }
-
-        client.newCall(request).enqueue(new Callback() {
+    public void textCallback(String chatText) {
+        counselingTextAPI.getAIReply(chatText).enqueue(new Callback<CounselingTextDTO>() {
             @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                e.printStackTrace();
+            public void onResponse(Call<CounselingTextDTO> call, Response<CounselingTextDTO> response) {
+                //서버에서 데이터 요청 성공시
+                CounselingTextDTO result = response.body();
+                Log.d("testt", "결과는 ${result}");
+
+
             }
 
             @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-
-                final String responseData = response.body().string();
-
-                CounselingTextActivity.this.runOnUiThread(() -> GetInfom.setText(responseData));
+            public void onFailure(Call<CounselingTextDTO> call, Throwable t) {
+                //서버 요청 실패
+                t.printStackTrace();
+                Log.d("testt", "에러입니다. ${t.message}");
             }
         });
     }

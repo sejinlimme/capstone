@@ -1,5 +1,8 @@
 from flask import Flask, jsonify
 from flask_restful import Api
+from transformers import PreTrainedTokenizerFast
+import torch
+
 
 Q_TKN = "<usr>"
 A_TKN = "<sys>"
@@ -21,7 +24,7 @@ model.eval()
 
 sent = '0'
 
-app = flask.Flask(__name__)  # Flask 객체 선언, 파라미터로 어플리케이션 패키지의 이름을 넣어줌
+app = Flask(__name__)  # Flask 객체 선언, 파라미터로 어플리케이션 패키지의 이름을 넣어줌
 
 api = Api(app)
 
@@ -41,4 +44,4 @@ def get_echo_call(param): #param = 입력으로 들어오는 텍스트
     return jsonify({"param": gen})
 
 if __name__ == "__main__":
-    app.run("192.168.123.105", port=5000, debug=True)
+    app.run("192.168.219.105", port=5000, debug=True)

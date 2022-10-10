@@ -9,7 +9,11 @@ from torch.utils.data import DataLoader, Dataset
 from transformers.optimization import AdamW, get_cosine_schedule_with_warmup
 from transformers import PreTrainedTokenizerFast, GPT2LMHeadModel
 import re
+import os
 from pathlib import Path
+
+#os.environ['CUDA_LAUNCH_BLOCKING'] = "-1"
+#os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 Q_TKN = "<usr>"
 A_TKN = "<sys>"
@@ -24,8 +28,8 @@ koGPT2_TOKENIZER = PreTrainedTokenizerFast.from_pretrained("skt/kogpt2-base-v2",
             pad_token=PAD, mask_token=MASK)
 model = GPT2LMHeadModel.from_pretrained('skt/kogpt2-base-v2')
 
-data_path = Path(__file__).parent.resolve().joinpath("./data/Chatbot_Data.csv")
-Chatbot_Data = pd.read_csv(data_path, encoding='utf-8')
+#data_path = Path(__file__).parent.resolve().joinpath("./data/Chatbot_Data.csv")
+Chatbot_Data = pd.read_csv('Chatbot_Data.csv', encoding='cp949')
 
 class ChatbotDataset(Dataset):
     def __init__(self, chats, max_len=40):
@@ -97,19 +101,25 @@ def collate_batch(batch):
     data = [item[0] for item in batch]
     mask = [item[1] for item in batch]
     label = [item[2] for item in batch]
-    return torch.LongTensor(data), torch.LongTensor(mask), torch.LongTensor(label)
+    a1 = np.array(data)
+    a2 = np.array(mask)
+    a3 = np.array(label)
+    return torch.cuda.LongTensor(a1), torch.cuda.LongTensor(a2), torch.cuda.LongTensor(a3)
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda") if torch.cuda.is_available() else ("cpu")
 train_set = ChatbotDataset(Chatbot_Data, max_len=40)
 
 train_dataloader = DataLoader(train_set, batch_size=32, num_workers=0, shuffle=True, collate_fn=collate_batch,)
 
 model.to(device)
+#next(model.parameters()).is_cuda
 model.train()
 
-save_ckpt_path = Path(__file__).parent.resolve().joinpath("./checkpoint/kogpt2.pth")
+save_ckpt_path = Path(__file__).parent.resolve().joinpath("./kogpt2.pth")
 
-model = torch.load(save_ckpt_path, map_location=device)
+#torch.save(model, 'kogpt2.pth')
+
+model = torch.load('kogpt2.pth', map_location=device)
 model.eval()
 
 sent = '0'
@@ -124,16 +134,16 @@ def index():
     with torch.no_grad():
         a = ""
         while 1:
-            input_ids = torch.LongTensor(koGPT2_TOKENIZER.encode(Q_TKN + q + SENT + sent + A_TKN + a)).unsqueeze(
+            input_ids = torch.cuda.LongTensor(koGPT2_TOKENIZER.encode(Q_TKN + q + SENT + sent + A_TKN + a)).unsqueeze(
                 dim=0)
             pred = model(input_ids)
             pred = pred.logits
-            gen = koGPT2_TOKENIZER.convert_ids_to_tokens(torch.argmax(pred, dim=-1).squeeze().numpy().tolist())[-1]
+            gen = koGPT2_TOKENIZER.convert_ids_to_tokens(torch.argmax(pred, dim=-1).squeeze().cpu().numpy().tolist())[-1]
             if gen == EOS:
                 break
             a += gen.replace("▁", " ")
-        response_string = "{}".format(a.strip()) #출력문 어디에 저장되는지 확인 필요함
+        response_string = "{0}".format(a.strip()) #출력문 어디에 저장되는지 확인 필요함
         return jsonify(message=response_string)
 
 if __name__ == "__main__":
-    app.run("192.168.219.105", port=5000, debug=True)
+    app.run("192.168.219.104", port=5000, debug=True)

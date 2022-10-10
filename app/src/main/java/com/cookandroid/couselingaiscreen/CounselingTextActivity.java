@@ -35,7 +35,7 @@ public class CounselingTextActivity extends AppCompatActivity {
     EditText messageText;
     Button submitButton;
     TextView reply;
-    String url = "http://192.168.1.7:5000/";
+    String url = "http://192.168.219.104:5000/";
 
     HashMap data = new HashMap();
 
@@ -48,7 +48,7 @@ public class CounselingTextActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.counselingtextscreen);
         //setContent View:XML에 정의된 각 위젯들을 정의된 속성을 지정하고 상하관계에 맞춘 뒤 메모리에 올려야 합니다. 이러한 일련의 작업을 소스상에서 제공하는 게 setContentView() 함수입니다.
         //키보드가 뷰를 밀어올리는 것을 방지
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -63,14 +63,14 @@ public class CounselingTextActivity extends AppCompatActivity {
         //to scroll the list view to bottom on data change
 
         //Observer (옵저버) 는 '관측자' 혹은 '감시자' 라는 뜻이다. 말 그대로 무언가를 감시하는 역할]]]
-        /*
+
         arrayAdapter.registerDataSetObserver(new DataSetObserver() {  //registerDataSetObserver(DataSetObserver observer)를 통해서 observer를 Adapter에 연결해야 한다.
             @Override
             public void onChanged() {  //메서드를 정의하는 Observer 객체를 만듭니다.
                 super.onChanged();  //부모클래스의 필드값이나 메소드를 직접 부를 때 붙여넣는 겁니다
                 listView.setSelection(arrayAdapter.getCount() - 1); //ListView row의 원하는 위치에 화면을 둘수가 있다.
             }
-        });*/
+        });
 
         messageText = (EditText) findViewById(R.id.chatting);
         submitButton = (Button) findViewById(R.id.send);
@@ -115,6 +115,14 @@ public class CounselingTextActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        jsonobj.setRetryPolicy(new com.android.volley.DefaultRetryPolicy(
+
+                20000 ,
+
+                com.android.volley.DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+
+                com.android.volley.DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         mRequestQueue.add(jsonobj);
 

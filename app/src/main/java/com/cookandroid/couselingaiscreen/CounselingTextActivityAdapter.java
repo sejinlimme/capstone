@@ -5,14 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class CounselingTextActivityAdapter extends ArrayAdapter<ResponseMessage> {
-
     private TextView chatText;
+    private ImageView aiEmage;
     private List<ResponseMessage> messageList = new ArrayList<ResponseMessage>(); // stores number of messages
     private Context context; //context:어플리케이션에 대해서 현재 상태를 나타내는 역할
 
@@ -34,6 +35,8 @@ class CounselingTextActivityAdapter extends ArrayAdapter<ResponseMessage> {
     public int getCount() {   //ListView에서 사용할 데이터의 총개수
         return this.messageList.size();
     }
+    public static final int SEND = 0;  //add
+    public static final int receive = 0;   //add
 
     // returns message at an index
     public ResponseMessage getItem(int index) {
@@ -53,11 +56,17 @@ class CounselingTextActivityAdapter extends ArrayAdapter<ResponseMessage> {
         if (messageObj.isMe()) {
             row = inflater.inflate(R.layout.counselingtextscreen_send, parent, false);
             //inflater : xml로 정의된 view나 menu등을 실제 객체화 시키는 역할
+            chatText = (TextView) row.findViewById(R.id.msgr);
+            chatText.setText(messageObj.getTextMessage());
         } else {
             row = inflater.inflate(R.layout.counselingtextscreen_receive, parent, false);
+            chatText = (TextView) row.findViewById(R.id.msgr);
+           // aiEmage = (ImageView) row.findViewById(R.id.AI_image);
+            chatText.setText(messageObj.getTextMessage());
         }
-        chatText = (TextView) row.findViewById(R.id.msgr);
-        chatText.setText(messageObj.getTextMessage());
+        //chatText = (TextView) row.findViewById(R.id.msgr);
+        //aiEmage = (ImageView) row.findViewById(R.id.AI_image);
+        //chatText.setText(messageObj.getTextMessage());
         return row;
     }
 }

@@ -35,7 +35,7 @@ public class CounselingTextActivity extends AppCompatActivity {
     EditText messageText;
     Button submitButton;
     TextView reply;
-    String url = "http://192.168.219.104:5000/";
+    String url = "http://192.168.0.5:5000/";
 
     HashMap data = new HashMap();
 
@@ -58,7 +58,7 @@ public class CounselingTextActivity extends AppCompatActivity {
         final ListView listView = (ListView) findViewById(R.id.chat_history);
         listView.setAdapter(arrayAdapter);  //View를 드래그하여 화면에 올리면 그 위에서 다양한 데이터를 올릴 수 있다. 데이터를 올리는 부분에서 뷰와 데이터를 연결해주는 다리역할을 하는것이 어댑터(Adapter) 이다.
         listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL); //새로운 item 이 add 되었을 때 focus 이동을 할지를 결정하는 속성이다.
-        //listView.setAdapter(chatArrayAdapter);
+        listView.setAdapter(arrayAdapter);
 
         //to scroll the list view to bottom on data change
 

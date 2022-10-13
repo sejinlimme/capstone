@@ -7,17 +7,6 @@
     android:orientation="horizontal">
 
 
-    <ImageView
-        android:id="@+id/AI_image"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="293dp"
-        app:layout_constraintBottom_toTopOf="@+id/speak_btn"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ai_picture2"
-        tools:ignore="MissingConstraints" />
-
     <TextView
         android:id="@+id/msgr"
         android:layout_width="wrap_content"

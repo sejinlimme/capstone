@@ -146,4 +146,4 @@ def index():
         return jsonify(message=response_string)
 
 if __name__ == "__main__":
-    app.run("192.168.219.104", port=5000, debug=True)
+    app.run("192.168.0.8", port=5000, debug=True)

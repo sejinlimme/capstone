@@ -8,40 +8,56 @@
 
     <ImageButton
         android:id="@+id/stop_btn"
-        android:layout_width="0dp"
-        android:layout_height="82dp"
+        android:layout_width="98dp"
+        android:layout_height="75dp"
         android:layout_marginEnd="80dp"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="28dp"
         android:background="#10092C"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/speak_btn"
+        app:layout_constraintStart_toEndOf="@+id/stopBtn"
+        app:layout_constraintTop_toBottomOf="@+id/AI_image"
+        app:layout_constraintVertical_bias="0.965"
         app:srcCompat="@drawable/call_stop_btn4" />
 
     <ImageView
         android:id="@+id/AI_image"
-        android:layout_width="442dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="293dp"
-        app:layout_constraintBottom_toTopOf="@+id/speak_btn"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginEnd="47dp"
+        android:layout_marginBottom="387dp"
+        app:layout_constraintBottom_toTopOf="@+id/stopBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ai_picture_4"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="-15dp" />
+        tools:ignore="MissingConstraints" />
 
-    <ImageButton
-        android:id="@+id/speak_btn"
-        android:layout_width="88dp"
-        android:layout_height="74dp"
-        android:layout_marginStart="74dp"
-        android:layout_marginEnd="68dp"
-        android:layout_marginBottom="36dp"
-        android:background="#10092C"
+    <Button
+        android:id="@+id/recBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="녹음시작"
+        app:layout_constraintBaseline_toBaselineOf="@+id/stopBtn"
+        app:layout_constraintStart_toStartOf="@+id/stopBtn" />
+
+    <Button
+        android:id="@+id/stopBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="79dp"
+        android:layout_marginEnd="57dp"
+        android:layout_marginBottom="48dp"
+        android:text="녹음정지"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/stop_btn"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AI_image"
-        app:srcCompat="@drawable/speak_btn2" />
+        app:layout_constraintVertical_bias="0.982" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,11 +35,11 @@ public class CounselingTextActivity extends AppCompatActivity {
     EditText messageText;
     Button submitButton;
     TextView reply;
-    String url = "http://192.168.0.5:5000/";
+    String url = "http://192.168.0.8:5000/";
 
-    HashMap data = new HashMap();
+    HashMap data = new HashMap();  //HashMap은 저장공간보다 값이 추가로 들어오면 List처럼 저장공간을 추가로 늘리는데 List처럼 저장공간을 한 칸씩 늘리지 않고 약 두배로 늘립니다.
 
-    RequestQueue mRequestQueue; //요청큐로 알아서 웹서버에 요청하고 응답까지 받아서 준다.
+    RequestQueue mRequestQueue;
     StringRequest stringRequest;
     String rep;
 
@@ -47,7 +47,7 @@ public class CounselingTextActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);  //값을 유지하며 항상 사용해야 하는 경우라도 화면이 세로모드에서 가로모드로 변경될 경우 전역변수에 설정한 값이 모두 초기화 된다. 이런 경우 변경된 값을 유지할때 사용
         setContentView(R.layout.counselingtextscreen);
         //setContent View:XML에 정의된 각 위젯들을 정의된 속성을 지정하고 상하관계에 맞춘 뒤 메모리에 올려야 합니다. 이러한 일련의 작업을 소스상에서 제공하는 게 setContentView() 함수입니다.
         //키보드가 뷰를 밀어올리는 것을 방지
@@ -55,8 +55,8 @@ public class CounselingTextActivity extends AppCompatActivity {
 
 
         final CounselingTextActivityAdapter arrayAdapter = new CounselingTextActivityAdapter(getApplicationContext(), R.layout.counselingtextscreen_send); //final 지연변수 상수화
-        final ListView listView = (ListView) findViewById(R.id.chat_history);
-        listView.setAdapter(arrayAdapter);  //View를 드래그하여 화면에 올리면 그 위에서 다양한 데이터를 올릴 수 있다. 데이터를 올리는 부분에서 뷰와 데이터를 연결해주는 다리역할을 하는것이 어댑터(Adapter) 이다.
+        final ListView listView = (ListView) findViewById(R.id.chat_history); //얘랑
+        listView.setAdapter(arrayAdapter);  //View를 드래그하여 화면에 올리면 그 위에서 다양한 데이터를 올릴 수 있다. 데이터를 올리는 부분에서 뷰와 데이터를 연결해주는 다리역할을 하는것이 어댑터(Adapter) 이다. //얘만 뺴고
         listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL); //새로운 item 이 add 되었을 때 focus 이동을 할지를 결정하는 속성이다.
         listView.setAdapter(arrayAdapter);
 

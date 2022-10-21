@@ -3,61 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#44454C">
-
-    <ImageButton
-        android:id="@+id/stop_btn"
-        android:layout_width="98dp"
-        android:layout_height="75dp"
-        android:layout_marginEnd="80dp"
-        android:layout_marginBottom="28dp"
-        android:background="#10092C"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/stopBtn"
-        app:layout_constraintTop_toBottomOf="@+id/AI_image"
-        app:layout_constraintVertical_bias="0.965"
-        app:srcCompat="@drawable/call_stop_btn4" />
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/AI_image"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="47dp"
+        android:layout_height="220dp"
+        android:layout_marginStart="36dp"
         android:layout_marginTop="55dp"
-        android:layout_marginEnd="47dp"
-        android:layout_marginBottom="387dp"
-        app:layout_constraintBottom_toTopOf="@+id/stopBtn"
+        android:layout_marginEnd="36dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ai_picture_4"
         tools:ignore="MissingConstraints" />
 
-    <Button
+    <ImageButton
         android:id="@+id/recBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="녹음시작"
-        app:layout_constraintBaseline_toBaselineOf="@+id/stopBtn"
-        app:layout_constraintStart_toStartOf="@+id/stopBtn" />
+        android:layout_marginStart="97dp"
+        android:layout_marginBottom="51dp"
+        android:background="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/recbtn" />
 
-    <Button
+    <ImageButton
         android:id="@+id/stopBtn"
+        android:layout_width="79dp"
+        android:layout_height="0dp"
+        android:background="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/stop_btn"
+        app:layout_constraintStart_toStartOf="@+id/recBtn"
+        app:layout_constraintTop_toTopOf="@+id/recBtn"
+        app:srcCompat="@drawable/recstopbtn" />
+
+    <ImageButton
+        android:id="@+id/stop_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="79dp"
-        android:layout_marginEnd="57dp"
-        android:layout_marginBottom="48dp"
-        android:text="녹음정지"
-        android:visibility="invisible"
+        android:layout_marginStart="45dp"
+        android:layout_marginBottom="53dp"
+        android:background="#00FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/stop_btn"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AI_image"
-        app:layout_constraintVertical_bias="0.982" />
+        app:layout_constraintStart_toEndOf="@+id/stopBtn"
+        app:srcCompat="@drawable/call_stop_btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

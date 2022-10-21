@@ -43,6 +43,7 @@
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="17dp"
         android:text="send"
+        android:backgroundTint="#151111"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/chatting"

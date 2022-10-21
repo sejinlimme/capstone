@@ -123,6 +123,7 @@
         android:layout_marginStart="56dp"
         android:layout_marginBottom="35dp"
         android:text="회원가입"
+        android:backgroundTint="#151111"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password2" />

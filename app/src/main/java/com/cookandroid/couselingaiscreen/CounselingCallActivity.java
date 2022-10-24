@@ -34,7 +34,6 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class CounselingCallActivity extends AppCompatActivity{
-    Button recBtn, stopBtn;
     Intent intent;
     SpeechRecognizer speechRecognizer;
     TextToSpeech tts;

@@ -3,6 +3,9 @@ package com.cookandroid.couselingaiscreen;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
@@ -10,7 +13,6 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -38,6 +40,7 @@ public class CounselingCallActivity extends AppCompatActivity{
     SpeechRecognizer speechRecognizer;
     TextToSpeech tts;
     final int PERMISSION = 1;
+    CameraSurfaceView surfaceView;
     String url = "http://192.168.0.8:5000/";
 
     HashMap data = new HashMap();
@@ -57,6 +60,7 @@ public class CounselingCallActivity extends AppCompatActivity{
         ImageButton recBtn = (ImageButton) findViewById(R.id.recBtn);
         ImageButton stopBtn = (ImageButton) findViewById(R.id.stopBtn);
         ImageButton stop_btn = (ImageButton) findViewById(R.id.stop_btn);
+        surfaceView = findViewById(R.id.surfaceview);
 
         intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,getPackageName());
@@ -87,6 +91,7 @@ public class CounselingCallActivity extends AppCompatActivity{
                 recBtn.setVisibility(View.VISIBLE);
                 stopBtn.setVisibility(View.INVISIBLE);
                 StopRecord();
+                capture();
             }
         });
 
@@ -256,5 +261,18 @@ public class CounselingCallActivity extends AppCompatActivity{
             tts = null;
         }
         super.onDestroy();
+    }
+
+    public void capture() {
+        surfaceView.capture(new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera) {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 0;
+                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+                camera.startPreview();
+            }
+        });
     }
 }

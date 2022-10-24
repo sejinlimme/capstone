@@ -11,12 +11,11 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="53dp"
         android:layout_marginEnd="1dp"
         android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toTopOf="@+id/send"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></ListView>
 
@@ -26,13 +25,14 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="4dp"
+        android:layout_marginBottom="17dp"
         android:backgroundTint="#E4DFDF"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="@+id/send"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/send"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/send" />
+        app:layout_constraintTop_toBottomOf="@+id/chat_history" />
 
     <Button
         android:id="@+id/send"
@@ -40,12 +40,22 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="17dp"
-        android:text="send"
         android:backgroundTint="#151111"
+        android:text="send"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/chatting"
         app:layout_constraintTop_toBottomOf="@+id/chat_history" />
+
+    <ImageButton
+        android:id="@+id/chattingstopbtn"
+        android:layout_width="52dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/chat_history"
+        app:layout_constraintStart_toStartOf="@+id/chat_history"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/backbtn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

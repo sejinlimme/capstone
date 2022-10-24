@@ -55,8 +55,8 @@ public class CounselingCallActivity extends AppCompatActivity{
 
         CheckPermission();
 
-        Button recBtn = (Button) findViewById(R.id.recBtn);
-        Button stopBtn = (Button) findViewById(R.id.stopBtn);
+        ImageButton recBtn = (ImageButton) findViewById(R.id.recBtn);
+        ImageButton stopBtn = (ImageButton) findViewById(R.id.stopBtn);
         ImageButton stop_btn = (ImageButton) findViewById(R.id.stop_btn);
 
         intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);

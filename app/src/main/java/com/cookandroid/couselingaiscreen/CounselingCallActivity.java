@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -40,13 +41,13 @@ public class CounselingCallActivity extends AppCompatActivity{
     SpeechRecognizer speechRecognizer;
     TextToSpeech tts;
     final int PERMISSION = 1;
-    CameraSurfaceView surfaceView;
+    CameraSurfaceView cameraSurfaceView;
+    final int MY_PERMISSIONS_REQUEST_CAMERA=1001;
     String url = "http://192.168.0.8:5000/";
 
     HashMap data = new HashMap();
 
     RequestQueue mRequestQueue;
-
 
     boolean recording = false;
 
@@ -57,10 +58,26 @@ public class CounselingCallActivity extends AppCompatActivity{
 
         CheckPermission();
 
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "권한 승인이 필요합니다", Toast.LENGTH_LONG).show();
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.CAMERA)) {
+                Toast.makeText(this, "표정인식 사용을 위해 카메라 권한이 필요합니다.", Toast.LENGTH_LONG).show();
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CAMERA},
+                        MY_PERMISSIONS_REQUEST_CAMERA);
+                Toast.makeText(this, "표정인식 사용을 위해 카메라 권한이 필요합니다.", Toast.LENGTH_LONG).show();
+            }
+        }
+
         ImageButton recBtn = (ImageButton) findViewById(R.id.recBtn);
         ImageButton stopBtn = (ImageButton) findViewById(R.id.stopBtn);
         ImageButton stop_btn = (ImageButton) findViewById(R.id.stop_btn);
-        surfaceView = findViewById(R.id.surfaceview);
+        cameraSurfaceView = findViewById(R.id.surfaceview);
 
         intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,getPackageName());
@@ -88,10 +105,10 @@ public class CounselingCallActivity extends AppCompatActivity{
         stopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                capture();
                 recBtn.setVisibility(View.VISIBLE);
                 stopBtn.setVisibility(View.INVISIBLE);
                 StopRecord();
-                capture();
             }
         });
 
@@ -263,15 +280,32 @@ public class CounselingCallActivity extends AppCompatActivity{
         super.onDestroy();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                if (grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "승인이 허가되어 있습니다.", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "아직 승인받지 않았습니다.", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        }
+    }
+
     public void capture() {
-        surfaceView.capture(new Camera.PictureCallback() {
+        cameraSurfaceView.capture(new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 0;
-                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-
-                camera.startPreview();
+                try {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                    camera.startPreview();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

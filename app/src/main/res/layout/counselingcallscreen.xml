@@ -49,6 +49,7 @@
         android:layout_marginTop="1dp"
         android:layout_marginBottom="1dp"
         android:background="#00FFFFFF"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/stop_btn"
         app:layout_constraintStart_toStartOf="@+id/recBtn"
         app:layout_constraintTop_toTopOf="@+id/stop_btn"

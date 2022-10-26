@@ -42,7 +42,7 @@ public class CounselingCallActivity extends AppCompatActivity{
     TextToSpeech tts;
     final int PERMISSION = 1;
     CameraSurfaceView cameraSurfaceView;
-    String url = "http://192.168.0.8:5000/";
+    String url = "http://192.168.0.8:5000/chat";
 
     HashMap data = new HashMap();
 

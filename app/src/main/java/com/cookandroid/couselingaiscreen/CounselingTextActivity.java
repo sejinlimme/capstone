@@ -35,7 +35,7 @@ public class CounselingTextActivity extends AppCompatActivity {
     EditText messageText;
     Button submitButton;
     TextView reply;
-    String url = "http://192.168.0.8:5000/";
+    String url = "http://192.168.0.8:5000/chat";
 
     HashMap data = new HashMap();  //HashMap은 저장공간보다 값이 추가로 들어오면 List처럼 저장공간을 추가로 늘리는데 List처럼 저장공간을 한 칸씩 늘리지 않고 약 두배로 늘립니다.
 

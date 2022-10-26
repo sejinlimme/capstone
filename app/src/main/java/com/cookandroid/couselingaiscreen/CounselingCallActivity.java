@@ -42,7 +42,6 @@ public class CounselingCallActivity extends AppCompatActivity{
     TextToSpeech tts;
     final int PERMISSION = 1;
     CameraSurfaceView cameraSurfaceView;
-    final int MY_PERMISSIONS_REQUEST_CAMERA=1001;
     String url = "http://192.168.0.8:5000/";
 
     HashMap data = new HashMap();
@@ -57,22 +56,6 @@ public class CounselingCallActivity extends AppCompatActivity{
         setContentView(R.layout.counselingcallscreen);
 
         CheckPermission();
-
-        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "권한 승인이 필요합니다", Toast.LENGTH_LONG).show();
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.CAMERA)) {
-                Toast.makeText(this, "표정인식 사용을 위해 카메라 권한이 필요합니다.", Toast.LENGTH_LONG).show();
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CAMERA},
-                        MY_PERMISSIONS_REQUEST_CAMERA);
-                Toast.makeText(this, "표정인식 사용을 위해 카메라 권한이 필요합니다.", Toast.LENGTH_LONG).show();
-            }
-        }
 
         ImageButton recBtn = (ImageButton) findViewById(R.id.recBtn);
         ImageButton stopBtn = (ImageButton) findViewById(R.id.stopBtn);
@@ -262,10 +245,12 @@ public class CounselingCallActivity extends AppCompatActivity{
     void CheckPermission() {
         if(Build.VERSION.SDK_INT >= 23) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_DENIED
-            || ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_DENIED) {
+            || ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_DENIED
+            || ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.INTERNET,
-                        Manifest.permission.RECORD_AUDIO}, PERMISSION);
+                        Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.CAMERA}, PERMISSION);
             }
         }
     }
@@ -278,22 +263,6 @@ public class CounselingCallActivity extends AppCompatActivity{
             tts = null;
         }
         super.onDestroy();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_CAMERA: {
-                if (grantResults.length > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "승인이 허가되어 있습니다.", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(this, "아직 승인받지 않았습니다.", Toast.LENGTH_LONG).show();
-                }
-                return;
-            }
-        }
     }
 
     public void capture() {

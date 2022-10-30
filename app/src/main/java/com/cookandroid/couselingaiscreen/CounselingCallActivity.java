@@ -12,6 +12,7 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -43,10 +45,13 @@ public class CounselingCallActivity extends AppCompatActivity{
     final int PERMISSION = 1;
     CameraSurfaceView cameraSurfaceView;
     String url = "http://192.168.0.8:5000/chat";
+    String pictureUrl = "http://192.168.0.8:5000/picture";
 
     HashMap data = new HashMap();
+    HashMap picData = new HashMap();
 
     RequestQueue mRequestQueue;
+    RequestQueue picRequestQueue;
 
     boolean recording = false;
 
@@ -88,7 +93,26 @@ public class CounselingCallActivity extends AppCompatActivity{
         stopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                capture();
+                cameraSurfaceView.capture(new Camera.PictureCallback() {
+                    @Override
+                    public void onPictureTaken(byte[] data, Camera camera) {
+                        try {
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                            byte[] image = byteArrayOutputStream.toByteArray();
+                            String byteStream = Base64.encodeToString(image, 0);
+
+                            picData.put("message", byteStream);
+                            postPicture(picData);
+
+                            camera.startPreview();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
                 recBtn.setVisibility(View.VISIBLE);
                 stopBtn.setVisibility(View.INVISIBLE);
                 StopRecord();
@@ -265,17 +289,33 @@ public class CounselingCallActivity extends AppCompatActivity{
         super.onDestroy();
     }
 
-    public void capture() {
-        cameraSurfaceView.capture(new Camera.PictureCallback() {
-            @Override
-            public void onPictureTaken(byte[] data, Camera camera) {
-                try {
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                    camera.startPreview();
-                } catch (Exception e) {
-                    e.printStackTrace();
+    public void postPicture(HashMap picData) {
+        picRequestQueue = Volley.newRequestQueue(this);
+
+        JsonObjectRequest jsonobj = new JsonObjectRequest(Request.Method.POST, pictureUrl, new JSONObject(picData),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
                 }
-            }
-        });
+        );
+
+        jsonobj.setRetryPolicy(new com.android.volley.DefaultRetryPolicy(
+
+                20000 ,
+
+                com.android.volley.DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+
+                com.android.volley.DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        picRequestQueue.add(jsonobj);
     }
+
 }

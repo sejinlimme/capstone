@@ -1,3 +1,5 @@
+import io
+
 from flask import Flask, request, jsonify
 import numpy as np
 import pandas as pd
@@ -11,6 +13,12 @@ from transformers import PreTrainedTokenizerFast, GPT2LMHeadModel
 import re
 import os
 from pathlib import Path
+import base64
+from PIL import Image
+import cv2
+import tensorflow as tf
+from tensorflow.keras.utils import img_to_array
+from keras.models import load_model
 
 #os.environ['CUDA_LAUNCH_BLOCKING'] = "-1"
 #os.environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -126,7 +134,7 @@ sent = '0'
 
 app = Flask(__name__)  # Flask 객체 선언, 파라미터로 어플리케이션 패키지의 이름을 넣어줌
 
-@app.route('/', methods=['POST'])
+@app.route('/chat', methods=['POST'])
 def index():
     req_data = request.get_json()
     q = req_data['message'].strip()
@@ -144,6 +152,43 @@ def index():
             a += gen.replace("▁", " ")
         response_string = "{0}".format(a.strip()) #출력문 어디에 저장되는지 확인 필요함
         return jsonify(message=response_string)
+
+@app.route('/picture', methods=['POST'])
+def emotion_detect():
+    base64_str = request.get_json()
+    data = base64_str['message']
+    imgdata = base64.b64decode(data)
+    dataBytesIO = io.BytesIO(imgdata)
+    image = Image.open(dataBytesIO)
+    gray = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2GRAY)
+
+    xml = 'haarcascade_frontalface_default.xml'
+    face_cascade = tf.keras.model.load_model('model.h5')
+    Emotions = ["Angry", "Disgust", "Fear", "Happiness", "Sad", "Surprise", "Neutral"]
+
+    faces = face_cascade.detectMultiScale(gray, 1.05, 5)
+
+    if len(faces) > 0:
+        # 가장 큰 이미지의 경우
+        face = sorted(faces, reverse=True, key=lambda x: (x[2] - x[0]) * (x[3] - x[1]))[0]
+        (fX, fY, fW, fH) = face
+
+        # 이미지 크기 조정
+        roi = gray[fY:fY + fH, fX:fX + fW]
+        roi = cv2.resize(roi, (48, 48))
+        roi = roi.astype("float") / 255.0
+        roi = img_to_array(roi)
+        roi = np.expand_dims(roi, axis=0)
+
+        # 표정 탐지
+        preds = model.predict(roi)[0]
+        emotion_probability = np.max(preds)
+        label = Emotions[preds.argmax()]
+
+        for (i, (emotion, prob)) in enumerate(zip(Emotions, preds)):
+            text = "{}: {:.2f}%".format(emotion, prob * 100)
+            print(text)
+
 
 if __name__ == "__main__":
     app.run("192.168.0.8", port=5000, debug=True)

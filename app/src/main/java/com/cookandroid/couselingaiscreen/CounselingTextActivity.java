@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;     //여러개의 Window를 가질 수 있고 이러한 Window들은 WindowManager가 관리를 합니다.
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;      //어댑터(adapter)라는 객체를 갖는다는 점입니다. 어댑터는 어댑터 뷰와 자식 뷰들 사이를 이어주는 중간 역할을 합니다.
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.database.core.Context;
 
 import org.json.JSONException;
 //예외구문, 문법적인 구조가 맞지 않을때, 제기슨 구성 이름이 null인경우,반환하는 메소드에서 변환할수 없는 문자열 있는 경우
@@ -28,6 +31,7 @@ import org.json.JSONObject;  //데이터를 구조적으로 표현하기 위한 
 
 import java.util.HashMap;   //많은 양의 데이터를 저장
 
+
 public class CounselingTextActivity extends AppCompatActivity {
 
     String message;
@@ -35,7 +39,13 @@ public class CounselingTextActivity extends AppCompatActivity {
     EditText messageText;
     Button submitButton;
     TextView reply;
-    String url = "http://192.168.0.8:5000/chat";
+    String url = "http://192.168.219.105:5000/chat";
+
+    InputMethodManager imm;
+
+
+
+
 
     HashMap data = new HashMap();  //HashMap은 저장공간보다 값이 추가로 들어오면 List처럼 저장공간을 추가로 늘리는데 List처럼 저장공간을 한 칸씩 늘리지 않고 약 두배로 늘립니다.
 
@@ -45,6 +55,10 @@ public class CounselingTextActivity extends AppCompatActivity {
 
     String TAG = CounselingTextActivityAdapter.class.getName();
 
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);  //값을 유지하며 항상 사용해야 하는 경우라도 화면이 세로모드에서 가로모드로 변경될 경우 전역변수에 설정한 값이 모두 초기화 된다. 이런 경우 변경된 값을 유지할때 사용
@@ -52,6 +66,7 @@ public class CounselingTextActivity extends AppCompatActivity {
         //setContent View:XML에 정의된 각 위젯들을 정의된 속성을 지정하고 상하관계에 맞춘 뒤 메모리에 올려야 합니다. 이러한 일련의 작업을 소스상에서 제공하는 게 setContentView() 함수입니다.
         //키보드가 뷰를 밀어올리는 것을 방지
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
 
 
         final CounselingTextActivityAdapter arrayAdapter = new CounselingTextActivityAdapter(getApplicationContext(), R.layout.counselingtextscreen_send); //final 지연변수 상수화
@@ -75,10 +90,14 @@ public class CounselingTextActivity extends AppCompatActivity {
         messageText = (EditText) findViewById(R.id.chatting);
         submitButton = (Button) findViewById(R.id.send);
 
+
+
+
         submitButton.setOnClickListener(new View.OnClickListener() { //이벤트 리스너를 등록하고 있습니다.
             @Override
             public void onClick(View v) { //layout설정 xml에 추가 되어 View에서 클릭 되었을 떄 정의된 이름의 함수를 호출하여 작동 시킨다.
                 message = messageText.getText().toString();  // getText()함수는 String 클래스 타입을 리턴하지 않고, Editable 인터페이스 타입을 리턴합니다. 그래서 String 타입으로 텍스트를 사용하고자 한다면, Editable 인터페이스가 제공하는 toString() 함수를 호출하여 String 타입으로 변환해야 합니다.
+                imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
                 sendMessage(arrayAdapter, message);
 
@@ -86,9 +105,11 @@ public class CounselingTextActivity extends AppCompatActivity {
 //                messageText.setText("");
                 postData(data, arrayAdapter); //webview에 post로 데이터 넘기는 방법
                 messageText.setText(""); //Text Object에 텍스트를 선언 하는 메서드 입니다.
+                imm.hideSoftInputFromWindow(messageText.getWindowToken(),0);
             }
         });
     }
+
 
     public void postData(HashMap data, final CounselingTextActivityAdapter adapter){
 
@@ -116,6 +137,8 @@ public class CounselingTextActivity extends AppCompatActivity {
                 }
         );
 
+
+
         jsonobj.setRetryPolicy(new com.android.volley.DefaultRetryPolicy(
 
                 20000 ,
@@ -127,6 +150,7 @@ public class CounselingTextActivity extends AppCompatActivity {
         mRequestQueue.add(jsonobj);
 
     }
+
 
     private boolean receiveMessage(CounselingTextActivityAdapter adapter, String msg) {
         adapter.add(new ResponseMessage(msg, false));

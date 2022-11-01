@@ -19,6 +19,13 @@ import cv2
 import tensorflow as tf
 from tensorflow.keras.utils import img_to_array
 from keras.models import load_model
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
+
+db_url = 'https://capstone-18a44-default-rtdb.firebaseio.com/'
+cred = credentials.Certificate(r"C:\Users\emfor\capstone-18a44-firebase-adminsdk-shxg2-b7a233d42d.json")
+default_app = firebase_admin.initialize_app(cred, {'databaseURL':db_url})
 
 #os.environ['CUDA_LAUNCH_BLOCKING'] = "-1"
 #os.environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -123,11 +130,11 @@ model.to(device)
 #next(model.parameters()).is_cuda
 model.train()
 
-save_ckpt_path = Path(__file__).parent.resolve().joinpath("./kogpt2.pth")
+save_ckpt_path = Path(__file__).parent.resolve().joinpath("./kogpt2(epoch_15).pth")
 
 #torch.save(model, 'kogpt2.pth')
 
-model = torch.load('kogpt2.pth', map_location=device)
+model = torch.load('kogpt2(epoch_15).pth', map_location=device)
 model.eval()
 
 sent = '0'
@@ -163,7 +170,8 @@ def emotion_detect():
     gray = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2GRAY)
 
     xml = 'haarcascade_frontalface_default.xml'
-    face_cascade = tf.keras.model.load_model('model.h5')
+    face_cascade = cv2.CascadeClassifier(xml)
+    face_model = tf.keras.models.load_model('model.h5')
     Emotions = ["Angry", "Disgust", "Fear", "Happiness", "Sad", "Surprise", "Neutral"]
 
     faces = face_cascade.detectMultiScale(gray, 1.05, 5)
@@ -181,13 +189,16 @@ def emotion_detect():
         roi = np.expand_dims(roi, axis=0)
 
         # 표정 탐지
-        preds = model.predict(roi)[0]
+        preds = face_model.predict(roi)[0]
         emotion_probability = np.max(preds)
         label = Emotions[preds.argmax()]
 
         for (i, (emotion, prob)) in enumerate(zip(Emotions, preds)):
             text = "{}: {:.2f}%".format(emotion, prob * 100)
             print(text)
+
+            dir = db.reference()
+            dir.update({'얼굴 표정 AI 결과' : text})
 
 
 if __name__ == "__main__":

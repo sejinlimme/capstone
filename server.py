@@ -193,13 +193,19 @@ def emotion_detect():
         emotion_probability = np.max(preds)
         label = Emotions[preds.argmax()]
 
-        for (i, (emotion, prob)) in enumerate(zip(Emotions, preds)):
-            text = "{}: {:.2f}%".format(emotion, prob * 100)
-            print(text)
+        face_emotion = []
 
-            dir = db.reference()
-            dir.update({'얼굴 표정 AI 결과' : text})
+        for (i, (emotion, prob)) in enumerate(zip(Emotions, preds)):
+
+            text = "{}: {:.2f}%".format(emotion, prob * 100)
+            #print(text)
+            #dir = db.reference()
+            face_emotion.append(text)
+
+            #dir.update({'얼굴 표정 AI 결과' : fase_emotion[]})
+        for i in range(len(face_emotion)):
+            print(face_emotion[i])
 
 
 if __name__ == "__main__":
-    app.run("192.168.0.8", port=5000, debug=True)
+    app.run("192.168.0.5", port=5000, debug=True)

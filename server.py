@@ -141,6 +141,8 @@ sent = '0'
 
 app = Flask(__name__)  # Flask 객체 선언, 파라미터로 어플리케이션 패키지의 이름을 넣어줌
 
+emotion_num = 0
+
 @app.route('/chat', methods=['POST'])
 def index():
     req_data = request.get_json()
@@ -198,13 +200,15 @@ def emotion_detect():
         for (i, (emotion, prob)) in enumerate(zip(Emotions, preds)):
 
             text = "{}: {:.2f}%".format(emotion, prob * 100)
-            #print(text)
-            #dir = db.reference()
             face_emotion.append(text)
+            emotion_num = emotion_num + 1
 
             #dir.update({'얼굴 표정 AI 결과' : fase_emotion[]})
         for i in range(len(face_emotion)):
             print(face_emotion[i])
+
+        dir = db.reference()
+        dir.update({'얼굴 표정 AI 결과 ' + emotion_num : [face_emotion[0], face_emotion[1], face_emotion[2], face_emotion[3], face_emotion[4], face_emotion[5], face_emotion[6]]})
 
 
 if __name__ == "__main__":

@@ -204,7 +204,7 @@ def emotion_detect():
         for i in range(len(face_emotion)):
             print(face_emotion[i])
 
-        dir = db.reference()
+        dir = db.reference('얼굴 표정 AI 결과')
         dir.update({'Angry' : face_emotion[0]})
         dir.update({'Disgust': face_emotion[1]})
         dir.update({'Fear': face_emotion[2]})

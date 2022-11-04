@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class CounselingCallActivity_logout extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.counselingcallscreen_login);
+            setContentView(R.layout.counselingcallscreen_logout);
 
             ImageButton recBtn = (ImageButton) findViewById(R.id.recBtn);
             ImageButton stopBtn = (ImageButton) findViewById(R.id.stopBtn);

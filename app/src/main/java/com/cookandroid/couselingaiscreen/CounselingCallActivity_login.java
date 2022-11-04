@@ -57,7 +57,7 @@ public class CounselingCallActivity_login extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.counselingcallscreen_login);
+        setContentView(R.layout.counselingcallscreen_logout);
 
         CheckPermission();
 

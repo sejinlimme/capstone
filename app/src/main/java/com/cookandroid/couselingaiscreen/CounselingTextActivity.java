@@ -1,7 +1,9 @@
 package com.cookandroid.couselingaiscreen;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity; //안드로이드의 하위버전을 지원하는 Activity
 
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,8 +14,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;      //어댑터(adapter)라는 객체를 갖는다는 점입니다. 어댑터는 어댑터 뷰와 자식 뷰들 사이를 이어주는 중간 역할을 합니다.
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;  //Request: 요청객체
 import com.android.volley.RequestQueue;
@@ -22,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.database.core.Context;
 
 import org.json.JSONException;
@@ -39,7 +44,7 @@ public class CounselingTextActivity extends AppCompatActivity {
     EditText messageText;
     Button submitButton;
     TextView reply;
-    String url = "http://192.168.219.105:5000/chat";
+    String url = "http://192.168.219.106:5000/chat";
 
     InputMethodManager imm;
 
@@ -53,21 +58,20 @@ public class CounselingTextActivity extends AppCompatActivity {
     StringRequest stringRequest;
     String rep;
 
+
     String TAG = CounselingTextActivityAdapter.class.getName();
-
-
-
+    private Object Task;
+    private boolean task;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);  //값을 유지하며 항상 사용해야 하는 경우라도 화면이 세로모드에서 가로모드로 변경될 경우 전역변수에 설정한 값이 모두 초기화 된다. 이런 경우 변경된 값을 유지할때 사용
         setContentView(R.layout.counselingtextscreen);
         //setContent View:XML에 정의된 각 위젯들을 정의된 속성을 지정하고 상하관계에 맞춘 뒤 메모리에 올려야 합니다. 이러한 일련의 작업을 소스상에서 제공하는 게 setContentView() 함수입니다.
         //키보드가 뷰를 밀어올리는 것을 방지
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
-
 
         final CounselingTextActivityAdapter arrayAdapter = new CounselingTextActivityAdapter(getApplicationContext(), R.layout.counselingtextscreen_send); //final 지연변수 상수화
         final ListView listView = (ListView) findViewById(R.id.chat_history); //얘랑
@@ -108,6 +112,18 @@ public class CounselingTextActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(messageText.getWindowToken(),0);
             }
         });
+
+        ImageButton chattingstopbtn = (ImageButton) findViewById(R.id.chattingstopbtn);
+
+        chattingstopbtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(getApplicationContext(), MarkActivity.class);
+                startActivity(intent);
+            }
+
+        });
+
     }
 
 

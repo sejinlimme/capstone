@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -38,14 +37,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class CounselingCallActivity extends AppCompatActivity{
+public class CounselingCallActivity_login extends AppCompatActivity{
     Intent intent;
     SpeechRecognizer speechRecognizer;
     TextToSpeech tts;
     final int PERMISSION = 1;
     CameraSurfaceView cameraSurfaceView;
-    String url = "http://192.168.0.8:5000/chat";
-    String pictureUrl = "http://192.168.0.8:5000/picture";
+    String url = "http://192.168.219.106:5000/chat";
+    String pictureUrl = "http://192.168.219.106:5000/picture";
 
     HashMap data = new HashMap();
     HashMap picData = new HashMap();
@@ -58,7 +57,7 @@ public class CounselingCallActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.counselingcallscreen);
+        setContentView(R.layout.counselingcallscreen_login);
 
         CheckPermission();
 
@@ -86,7 +85,7 @@ public class CounselingCallActivity extends AppCompatActivity{
                 recBtn.setVisibility(View.INVISIBLE);
                 stopBtn.setVisibility(View.VISIBLE);
                 StartRecord();
-                Toast.makeText(CounselingCallActivity.this, "문장을 말씀하신 후 녹음정지 버튼을 눌러주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CounselingCallActivity_login.this, "문장을 말씀하신 후 녹음정지 버튼을 눌러주세요.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -223,7 +222,7 @@ public class CounselingCallActivity extends AppCompatActivity{
                     message = "알 수 없는 오류임";
                     break;
             }
-            Toast.makeText(CounselingCallActivity.this, "에러가 발생하였습니다. : " + message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(CounselingCallActivity_login.this, "에러가 발생하였습니다. : " + message, Toast.LENGTH_SHORT).show();
         }
 
         @Override

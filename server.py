@@ -204,7 +204,7 @@ def emotion_detect():
         for i in range(len(face_emotion)):
             print(face_emotion[i])
 
-        dir = db.reference('얼굴 표정 AI 결과')
+        dir = db.reference()
         dir.update({'Angry' : face_emotion[0]})
         dir.update({'Disgust': face_emotion[1]})
         dir.update({'Fear': face_emotion[2]})
@@ -215,4 +215,4 @@ def emotion_detect():
 
 
 if __name__ == "__main__":
-    app.run("192.168.0.5", port=5000, debug=True)
+    app.run("192.168.219.106", port=5000, debug=True)

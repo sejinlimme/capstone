@@ -9,12 +9,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-public class CounselingChoiceActivity extends AppCompatActivity {
+public class CounselingChoiceActivity_logout extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.counselingscreenchoice);
+        setContentView(R.layout.counselingscreenchoice_logout);
 
 
         Button call_btn = (Button) findViewById(R.id.call_btn);
@@ -22,7 +22,7 @@ public class CounselingChoiceActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(getApplicationContext(), CounselingCallActivity.class);
+                Intent intent = new Intent(getApplicationContext(), CounselingCallActivity_logout.class);
                 startActivity(intent);
             }
         });
@@ -32,7 +32,7 @@ public class CounselingChoiceActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(getApplicationContext(), CounselingTextActivity.class);
+                Intent intent = new Intent(getApplicationContext(), CounselingTextActivity_logout.class);
                 startActivity(intent);
             }
         });

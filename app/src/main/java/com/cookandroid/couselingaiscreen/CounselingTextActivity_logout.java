@@ -1,6 +1,5 @@
 package com.cookandroid.couselingaiscreen;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity; //안드로이드의 하위버전을 지원하는 Activity
 
 import android.content.Intent;
@@ -9,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;     //여러개의 Window를 가질 수 있고 이러한 Window들은 WindowManager가 관리를 합니다.
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;      //어댑터(adapter)라는 객체를 갖는다는 점입니다. 어댑터는 어댑터 뷰와 자식 뷰들 사이를 이어주는 중간 역할을 합니다.
 import android.widget.Button;
@@ -17,7 +15,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;  //Request: 요청객체
 import com.android.volley.RequestQueue;
@@ -26,8 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.database.core.Context;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONException;
 //예외구문, 문법적인 구조가 맞지 않을때, 제기슨 구성 이름이 null인경우,반환하는 메소드에서 변환할수 없는 문자열 있는 경우
@@ -36,8 +32,7 @@ import org.json.JSONObject;  //데이터를 구조적으로 표현하기 위한 
 
 import java.util.HashMap;   //많은 양의 데이터를 저장
 
-
-public class CounselingTextActivity extends AppCompatActivity {
+public class CounselingTextActivity_logout extends AppCompatActivity{
 
     String message;
     ListView list; //어댑터가 데이터를 가공해서 제공하면 어댑터 뷰는 그 데이터를 출력하는 역할
@@ -62,13 +57,15 @@ public class CounselingTextActivity extends AppCompatActivity {
     String TAG = CounselingTextActivityAdapter.class.getName();
     private Object Task;
     private boolean task;
+    private FirebaseAuth firebaseAuth;
+    private Object AuthResult;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);  //값을 유지하며 항상 사용해야 하는 경우라도 화면이 세로모드에서 가로모드로 변경될 경우 전역변수에 설정한 값이 모두 초기화 된다. 이런 경우 변경된 값을 유지할때 사용
-        setContentView(R.layout.counselingtextscreen);
+        setContentView(R.layout.counselingtextscreen_login);
         //setContent View:XML에 정의된 각 위젯들을 정의된 속성을 지정하고 상하관계에 맞춘 뒤 메모리에 올려야 합니다. 이러한 일련의 작업을 소스상에서 제공하는 게 setContentView() 함수입니다.
         //키보드가 뷰를 밀어올리는 것을 방지
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -115,11 +112,14 @@ public class CounselingTextActivity extends AppCompatActivity {
 
         ImageButton chattingstopbtn = (ImageButton) findViewById(R.id.chattingstopbtn);
 
+
         chattingstopbtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(getApplicationContext(), MarkActivity.class);
+
+                Intent intent = new Intent(CounselingTextActivity_logout.this, MainActivity.class);
                 startActivity(intent);
+
             }
 
         });
@@ -178,4 +178,5 @@ public class CounselingTextActivity extends AppCompatActivity {
         adapter.add(new ResponseMessage(msg, true));
         return true;
     }
+
 }

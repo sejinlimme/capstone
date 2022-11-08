@@ -30,12 +30,14 @@
         </activity>
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".MembershipActivity"></activity>
-        <activity android:name=".CounselingChoiceActivity"></activity>
+        <activity android:name=".CounselingChoiceActivity_logout"></activity>
         <activity android:name=".CounselingCallActivity_login"></activity>
-        <activity android:name=".CounselingTextActivity"></activity>
+        <activity android:name=".CounselingTextActivity_login"></activity>
         <activity android:name=".MarkActivity"></activity>
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".CounselingCallActivity_logout"></activity>
+        <activity android:name=".CounselingTextActivity_logout"></activity>
+        <activity android:name=".CounselingChoiceActivity_login"></activity>
     </application>
 
 </manifest>

@@ -29,4 +29,14 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="성능을 평가해주세요" />
 
+    <Button
+        android:id="@+id/markstore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="432dp"
+        android:text="저장"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

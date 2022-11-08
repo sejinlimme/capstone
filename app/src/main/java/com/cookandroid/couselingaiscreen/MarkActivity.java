@@ -31,9 +31,9 @@ public class MarkActivity extends AppCompatActivity {
     PowerManager.WakeLock wakeLock;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference = database.getReference();
+    //private DatabaseReference databaseReference = database.getReference();
 
-    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference mRootRef = database.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

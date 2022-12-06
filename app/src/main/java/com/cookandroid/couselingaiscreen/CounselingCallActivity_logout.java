@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -48,6 +49,10 @@ public class CounselingCallActivity_logout extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.counselingcallscreen_logout);
+
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.hide();
+
 
             ImageButton recBtn = (ImageButton) findViewById(R.id.recBtn);
             ImageButton stopBtn = (ImageButton) findViewById(R.id.stopBtn);

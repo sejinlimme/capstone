@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.HashMap;
@@ -34,6 +35,9 @@ public class MembershipActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.membershipscreen);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         //파이어베이스 접근 설정
         firebaseAuth =  FirebaseAuth.getInstance();

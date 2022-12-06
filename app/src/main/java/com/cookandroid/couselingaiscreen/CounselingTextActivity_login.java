@@ -1,5 +1,6 @@
 package com.cookandroid.couselingaiscreen;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity; //안드로이드의 하위버전을 지원하는 Activity
 
 import android.content.Intent;
@@ -42,7 +43,7 @@ public class CounselingTextActivity_login extends AppCompatActivity {
     Button submitButton;
     ImageButton chattingstopbtn;
     TextView reply;
-    String url = "http://192.168.219.106:5000/chat";
+    String url = "http://192.168.0.5:5000/chat";
 
     InputMethodManager imm;
 
@@ -71,6 +72,10 @@ public class CounselingTextActivity_login extends AppCompatActivity {
         setContentView(R.layout.counselingtextscreen_login);
         //setContent View:XML에 정의된 각 위젯들을 정의된 속성을 지정하고 상하관계에 맞춘 뒤 메모리에 올려야 합니다. 이러한 일련의 작업을 소스상에서 제공하는 게 setContentView() 함수입니다.
         //키보드가 뷰를 밀어올리는 것을 방지
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         final CounselingTextActivityAdapter arrayAdapter = new CounselingTextActivityAdapter(getApplicationContext(), R.layout.counselingtextscreen_send); //final 지연변수 상수화

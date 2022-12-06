@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -43,8 +44,8 @@ public class CounselingCallActivity_login extends AppCompatActivity{
     TextToSpeech tts;
     final int PERMISSION = 1;
     CameraSurfaceView cameraSurfaceView;
-    String url = "http://192.168.219.106:5000/chat";
-    String pictureUrl = "http://192.168.219.106:5000/picture";
+    String url = "http://192.168.0.5:5000/chat";
+    String pictureUrl = "http://192.168.0.5:5000/picture";
 
     HashMap data = new HashMap();
     HashMap picData = new HashMap();
@@ -58,6 +59,9 @@ public class CounselingCallActivity_login extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.counselingcallscreen_login);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         CheckPermission();
 

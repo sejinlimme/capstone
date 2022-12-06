@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -16,6 +17,8 @@ public class CounselingChoiceActivity_logout extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.counselingscreenchoice_logout);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         Button call_btn = (Button) findViewById(R.id.call_btn);
         call_btn.setOnClickListener(new View.OnClickListener(){

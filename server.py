@@ -130,11 +130,11 @@ model.to(device)
 #next(model.parameters()).is_cuda
 model.train()
 
-save_ckpt_path = Path(__file__).parent.resolve().joinpath("./kogpt2(epoch_15).pth")
+save_ckpt_path = Path(__file__).parent.resolve().joinpath("./kogpt2.pth")
 
 #torch.save(model, 'kogpt2.pth')
 
-model = torch.load('kogpt2(epoch_15).pth', map_location=device)
+model = torch.load('kogpt2.pth', map_location=device)
 model.eval()
 
 sent = '0'
@@ -205,13 +205,8 @@ def emotion_detect():
             print(face_emotion[i])
 
         dir = db.reference()
-        dir.update({'Angry' : face_emotion[0]})
-        dir.update({'Disgust': face_emotion[1]})
-        dir.update({'Fear': face_emotion[2]})
-        dir.update({'Happiness': face_emotion[3]})
-        dir.update({'Sad': face_emotion[4]})
-        dir.update({'Surprise' : face_emotion[5]})
-        dir.update({'Neutral' : face_emotion[6]})
+        dir.push({'Angry': face_emotion[0], 'Disgust': face_emotion[1], 'Fear': face_emotion[2], 'Happiness': face_emotion[3], 'Sad': face_emotion[4], 'Surprise': face_emotion[5], 'Neutral': face_emotion[6]})
+
 
 
 if __name__ == "__main__":

@@ -30,6 +30,8 @@ default_app = firebase_admin.initialize_app(cred, {'databaseURL':db_url})
 #os.environ['CUDA_LAUNCH_BLOCKING'] = "-1"
 #os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
+uid_str = None
+
 Q_TKN = "<usr>"
 A_TKN = "<sys>"
 BOS = '</s>'
@@ -197,19 +199,20 @@ def emotion_detect():
 
         for (i, (emotion, prob)) in enumerate(zip(Emotions, preds)):
 
-            #text = "{}: {:.2f}%".format(emotion, prob * 100)
             text = "{:.2f}%".format(prob * 100)
             face_emotion.append(text)
 
         for i in range(len(face_emotion)):
             print(face_emotion[i])
 
-
-        dir = db.reference()
+        dir = db.reference(uid_str)
         dir.push({'Angry': face_emotion[0], 'Disgust': face_emotion[1], 'Fear': face_emotion[2], 'Happiness': face_emotion[3], 'Sad': face_emotion[4], 'Surprise': face_emotion[5], 'Neutral': face_emotion[6]})
 
 @app.route('/uid', methods=['POST'])
-def uid():
+def uid_detect():
+    req_uid = request.get_json()
+    uid_str = req_uid['message'].strip()
+    return uid_str
 
 
 if __name__ == "__main__":

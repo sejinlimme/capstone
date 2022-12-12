@@ -76,19 +76,19 @@ public class LoginActivity extends AppCompatActivity {
                 String pwd = mPasswordText.getText().toString().trim();
                 firebaseAuth.signInWithEmailAndPassword(email, pwd)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            private String uid;
+                            //private String uid;
 
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
 
-                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                    /*FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                     if (user != null)
                                     {
-                                        /*this.uid = user.getUid();
+                                        this.uid = user.getUid();
                                         data.put("uid", uid);
-                                        postData(data);*/
-                                    }
+                                        postData(data);
+                                    }*/
 
                                     Intent intent = new Intent(LoginActivity.this, CounselingChoiceActivity_login.class);
                                     startActivity(intent);

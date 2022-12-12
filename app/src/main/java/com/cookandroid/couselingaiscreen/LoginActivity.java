@@ -39,9 +39,9 @@ public class LoginActivity extends AppCompatActivity {
     Button mLoginBtn, mRegisterBtn;
     EditText mEmailText, mPasswordText;
     private FirebaseAuth firebaseAuth;
-    HashMap data = new HashMap();
+    /*HashMap data = new HashMap();
     String url = "http://192.168.219.106:5000/uid";
-    RequestQueue mRequestQueue;
+    RequestQueue mRequestQueue;*/
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,9 +85,9 @@ public class LoginActivity extends AppCompatActivity {
                                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                     if (user != null)
                                     {
-                                        this.uid = user.getUid();
+                                        /*this.uid = user.getUid();
                                         data.put("uid", uid);
-                                        postData(data);
+                                        postData(data);*/
                                     }
 
                                     Intent intent = new Intent(LoginActivity.this, CounselingChoiceActivity_login.class);
@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void postData(HashMap data) {
+    /*public void postData(HashMap data) {
         mRequestQueue = Volley.newRequestQueue(this);
 
         JsonObjectRequest jsonobj = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(data),
@@ -128,6 +128,6 @@ public class LoginActivity extends AppCompatActivity {
                 com.android.volley.DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         mRequestQueue.add(jsonobj);
-    }
+    }*/
 
 }

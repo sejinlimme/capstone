@@ -124,7 +124,7 @@ def collate_batch(batch):
 device = torch.device("cuda") if torch.cuda.is_available() else ("cpu")
 train_set = ChatbotDataset(Chatbot_Data, max_len=40)
 
-train_dataloader = DataLoader(train_set, batch_size=32, num_workers=0, shuffle=True, collate_fn=collate_batch,)
+train_dataloader = DataLoader(train_set, batch_size=28, num_workers=0, shuffle=True, collate_fn=collate_batch,)
 
 model.to(device)
 #next(model.parameters()).is_cuda
@@ -204,9 +204,12 @@ def emotion_detect():
         for i in range(len(face_emotion)):
             print(face_emotion[i])
 
+
         dir = db.reference()
         dir.push({'Angry': face_emotion[0], 'Disgust': face_emotion[1], 'Fear': face_emotion[2], 'Happiness': face_emotion[3], 'Sad': face_emotion[4], 'Surprise': face_emotion[5], 'Neutral': face_emotion[6]})
 
+@app.route('/uid', methods=['POST'])
+def uid():
 
 
 if __name__ == "__main__":

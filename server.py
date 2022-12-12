@@ -205,11 +205,12 @@ def emotion_detect():
         for i in range(len(face_emotion)):
             print(face_emotion[i])
 
-        dir = db.reference(uid_str)
+        str_uid = uid_detect(uid_str)
+        dir = db.reference(str_uid)
         dir.push({'Angry': face_emotion[0], 'Disgust': face_emotion[1], 'Fear': face_emotion[2], 'Happiness': face_emotion[3], 'Sad': face_emotion[4], 'Surprise': face_emotion[5], 'Neutral': face_emotion[6]})
 
 @app.route('/uid', methods=['POST'])
-def uid_detect():
+def uid_detect(uid_str):
     req_uid = request.get_json()
     uid_str = req_uid['message'].strip()
     return uid_str
